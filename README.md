@@ -18,9 +18,9 @@ python -m pip install pygame
 Optionnel: utiliser un environnement virtuel avant l'installation des dépendances.
 
 python -m venv .venv
-# Windows
+#### Windows
 .venv\Scripts\activate
-# macOS / Linux
+#### macOS / Linux
 source .venv/bin/activate
 
 
