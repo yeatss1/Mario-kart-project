@@ -1,7 +1,9 @@
 import pygame
 import math as m
 from constants import (
-    CAR_ACCELERATION, CAR_WIDTH, CAR_LENGTH, TILE_SIZE, CAR_TURN_ANGLE
+    CAR_ACCELERATION, CAR_BRAKE, CAR_REVERSE_ACCELERATION,
+    CAR_MAX_SPEED, CAR_MAX_REVERSE_SPEED,
+    CAR_WIDTH, CAR_LENGTH, TILE_SIZE, CAR_TURN_ANGLE
 )
 
 
@@ -15,10 +17,18 @@ class Car:
         self.sprite = self.build_sprite()
 
     def accelerate(self) -> None:
-        self.speed += CAR_ACCELERATION
+        """Touche avancer: accélère en marche avant / freine en marche arrière"""
+        if self.speed < 0:
+            self.speed = min(0.0, self.speed + CAR_BRAKE)
+        else:
+            self.speed += CAR_ACCELERATION
 
-    def decelerate(self):
-        self.speed -= CAR_ACCELERATION
+    def decelerate(self) -> None:
+        """Touche reculer: freine en marche avant / recule si la voiture est arrêtée."""
+        if self.speed > 0:
+            self.speed = max(0.0, self.speed - CAR_BRAKE)
+        else:
+            self.speed -= CAR_REVERSE_ACCELERATION
 
     def turn_left(self):
         self.angle += CAR_TURN_ANGLE    
@@ -26,10 +36,17 @@ class Car:
     def turn_right(self):
         self.angle -= CAR_TURN_ANGLE
 
+    def max_speed(self) -> None:
+        """Limite la vitesse en marche avant/arrière"""
+        self.speed = max(-CAR_MAX_REVERSE_SPEED, min(self.speed, CAR_MAX_SPEED))
+
     def update_position(self) -> None:
-        """Déplace la voiture de "speed" pixels dans la direction de son angle"""
+        """Limite la vitesse puis déplace la voiture de "speed" pixels dans la direction de son angle"""
+        self.max_speed()
         self.x += self.speed * m.cos(self.angle)
-        self.y -= self.speed * m.sin(self.angle)
+        self.y -= self.speed * m.sin(self.angle)    #Axe y orienté vers le bas
+
+        print(round(self.speed, 2))
 
     def build_sprite(self) -> pygame.Surface:
         """Dessine la voiture orientée vers la droite (angle 0)"""
