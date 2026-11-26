@@ -26,5 +26,5 @@ class InputHandler:
         for key, action in self.mapping.items():
             if keys[key]:
                 p[action] = True
-        print(p)
+        #print(p)
         return p

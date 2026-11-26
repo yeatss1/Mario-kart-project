@@ -65,10 +65,8 @@ class GameController:
         if player_input['decelerate']:
             car.decelerate()
         if player_input['turn_left']:
-            print("Tourne à gauche")
             car.turn_left()
         if player_input['turn_right']:
-            print("Torune à droite")
             car.turn_right()
         # if player_input["echap"]:
 

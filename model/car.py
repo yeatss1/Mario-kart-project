@@ -1,7 +1,7 @@
 import pygame
-import math
+import math as m
 from constants import (
-    CAR_ACCELERATION, CAR_WIDTH, CAR_HEIGHT, TILE_SIZE, CAR_TURN_ANGLE
+    CAR_ACCELERATION, CAR_WIDTH, CAR_LENGTH, TILE_SIZE, CAR_TURN_ANGLE
 )
 
 
@@ -27,17 +27,22 @@ class Car:
         self.angle -= CAR_TURN_ANGLE
 
     def update_position(self) -> None:
-        self.y += self.speed
-        # self.y += flocko
-        #print(self.y)
+        """Déplace la voiture de "speed" pixels dans la direction de son angle"""
+        self.x += self.speed * m.cos(self.angle)
+        self.y -= self.speed * m.sin(self.angle)
 
     def build_sprite(self) -> pygame.Surface:
-        surf = pygame.Surface((CAR_WIDTH, CAR_HEIGHT), pygame.SRCALPHA)
-        pygame.draw.rect(surf, (255, 0, 0), (0, 0, CAR_WIDTH,
-                         CAR_HEIGHT), border_radius=5)
+        """Dessine la voiture orientée vers la droite (angle 0)"""
+        surf = pygame.Surface((CAR_LENGTH, CAR_WIDTH), pygame.SRCALPHA)
+        pygame.draw.rect(surf, (255, 0, 0), (0, 0, CAR_LENGTH, CAR_WIDTH),
+                         border_radius=5)
+
+        #Dessin d'un pare prise pour repérer l'avant
+        pygame.draw.rect(surf, (180, 220, 255), (CAR_LENGTH-18, 4, 8, CAR_WIDTH-8), border_radius=2)
         return surf
 
     def get_rotated_sprite(self) -> tuple[pygame.Surface, pygame.Rect]:
-        rotated = pygame.transform.rotate(self.sprite, -self.angle)
+        """Renvoie le sprite tourné selon l'angle et on rectangle centré sur la voiture"""
+        rotated = pygame.transform.rotate(self.sprite, m.degrees(self.angle))
         rect = rotated.get_rect(center=(int(self.x), int(self.y)))
         return rotated, rect
