@@ -3,7 +3,8 @@ import math as m
 from constants import (
     CAR_ACCELERATION, CAR_BRAKE, CAR_REVERSE_ACCELERATION,
     CAR_MAX_SPEED, CAR_MAX_REVERSE_SPEED,
-    CAR_WIDTH, CAR_LENGTH, TILE_SIZE, CAR_TURN_ANGLE
+    CAR_WIDTH, CAR_LENGTH, TILE_SIZE, CAR_TURN_ANGLE,
+    CAR_AIR_DRAG, CAR_STOP_SPEED
 )
 
 
@@ -36,12 +37,19 @@ class Car:
     def turn_right(self):
         self.angle -= CAR_TURN_ANGLE
 
+    def apply_air_drag(self) -> None:
+        """Ralentit la voiture proportionnellement à la vitesse"""
+        self.speed *= 1-CAR_AIR_DRAG
+        if abs(self.speed) < CAR_STOP_SPEED:
+            self.speed = 0.
+
     def max_speed(self) -> None:
         """Limite la vitesse en marche avant/arrière"""
         self.speed = max(-CAR_MAX_REVERSE_SPEED, min(self.speed, CAR_MAX_SPEED))
 
     def update_position(self) -> None:
-        """Limite la vitesse puis déplace la voiture de "speed" pixels dans la direction de son angle"""
+        """Frottements, Limite la vitesse puis déplace la voiture de "speed" pixels dans la direction de son angle"""
+        self.apply_air_drag()
         self.max_speed()
         self.x += self.speed * m.cos(self.angle)
         self.y -= self.speed * m.sin(self.angle)    #Axe y orienté vers le bas

@@ -6,10 +6,12 @@ TILE_SIZE = 64
 GRID_COLS = 16
 GRID_ROWS = 12
 
-CAR_ACCELERATION = 0.1
+CAR_ACCELERATION = 0.15
 CAR_BRAKE = 0.3
 CAR_REVERSE_ACCELERATION = 0.05
 
+CAR_AIR_DRAG = 0.02    #Frottement de l'air - fraction de vitesse perdue par frame
+CAR_STOP_SPEED = 0.04   #En dessous de cette vitesse -> Voiture arrétée
 CAR_MAX_SPEED = 7
 CAR_MAX_REVERSE_SPEED = 2.5
 
