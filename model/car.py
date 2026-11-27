@@ -54,7 +54,7 @@ class Car:
         self.x += self.speed * m.cos(self.angle)
         self.y -= self.speed * m.sin(self.angle)    #Axe y orienté vers le bas
 
-        print(round(self.speed, 2))
+        # print(round(self.speed, 2)) ça faisait lag le code à la mort
 
     def build_sprite(self) -> pygame.Surface:
         """Dessine la voiture orientée vers la droite (angle 0)"""

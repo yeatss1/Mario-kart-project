@@ -9,7 +9,8 @@ MAPPING = {
     pygame.K_LEFT : "turn_left",
     pygame.K_q : "turn_left",
     pygame.K_RIGHT : "turn_right",
-    pygame.K_d : "turn_right"
+    pygame.K_d : "turn_right",
+    pygame.K_ESCAPE : "echap"  
 }
 
 class InputHandler:

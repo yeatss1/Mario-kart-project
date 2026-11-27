@@ -22,6 +22,7 @@ CAR_TURN_ANGLE = 0.05
 
 class GameState:
     MENU = "menu"
+    MENU_JEU = "menu_jeu"
     RACING = "racing"
 
 

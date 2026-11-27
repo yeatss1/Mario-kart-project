@@ -36,18 +36,33 @@ class GameController:
                 self.handle_keydown(event.key)
 
     def handle_keydown(self, key: int) -> None:
-
         state = self.model.state
 
         if state == GameState.MENU:
             self.handle_menu_key(key)
+        elif state == GameState.MENU_JEU:
+            self.handle_menu_jeu_key(key)
+        elif state == GameState.RACING:
+            if key == pygame.K_ESCAPE:
+                self.model.state = GameState.MENU_JEU  
 
     def handle_menu_key(self, key: int) -> None:
+        # Premier menu / ecran principal façon
         if key == pygame.K_RETURN:
+            self.model.state = GameState.MENU_JEU
+        elif key == pygame.K_ESCAPE: #Quitte le jeu
+            self.quit()
+
+    def handle_menuJeu_key(self, key:int):
+        if key in (pygame.K_RIGHT, pygame.K_d): # d ou fleche de droite
+            self.model.select_next()
+        elif key in (pygame.K_LEFT, pygame.K_q): # q ou fleche de gauche
+            self.model.select_previous()
+        elif key == pygame.K_RETURN: # entrée
             self.model.load_circuit()
             self.model.state = GameState.RACING
         elif key == pygame.K_ESCAPE:
-            self.quit()
+            self.model.state = GameState.MENU # retour au menu d'accueils
 
     def update(self) -> None:
         if self.model.state != GameState.RACING:
@@ -68,7 +83,8 @@ class GameController:
             car.turn_left()
         if player_input['turn_right']:
             car.turn_right()
-        # if player_input["echap"]:
+        # if player_input['echap']:
+        #     pygame.quit() 
 
     def render(self) -> None:
         self.view.draw(self.model)
